@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang='en'>
+  <head>
+    <meta charset='utf-8'>
+    <title>Accessibility for Web Applications - Presentation</title>
+    <meta content='kaeff' name='author'>
+    <meta content='yes' name='apple-mobile-web-app-capable'>
+    <meta content='black-translucent' name='apple-mobile-web-app-status-bar-style'>
+    <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no' name='viewport'>
+    <link href='css/reveal.min.css' rel='stylesheet'>
+    <link href='css/theme/default.css' id='theme' rel='stylesheet'>
+    <!-- For syntax highlighting -->
+    <link href='lib/css/zenburn.css' rel='stylesheet'>
+    <!-- If the query includes 'print-pdf', use the PDF print sheet -->
+    <script>
+      document.write( '<link rel="stylesheet" href="css/print/' + ( window.location.search.match( /print-pdf/gi ) ? 'pdf' : 'paper' ) + '.css" type="text/css" media="print">' );
+    </script>
+    <!--[if lt IE 9]>
+      <script src="lib/js/html5shiv.js"></script>
+    <![endif]-->
+    <style>
+      .reveal h2 {
+        margin: 1em 0 0.2em 0;
+      }
+      
+      .reveal blockquote {
+        width: 90%
+      }
+      
+      .reveal a {
+        target: blank;
+      }
+      
+      .reveal strong {
+        color: #13daec;
+        text-decoration: none;
+        -webkit-transition: color .15s ease;
+        -moz-transition: color .15s ease;
+        -ms-transition: color .15s ease;
+        -o-transition: color .15s ease;
+        transition: color .15s ease;
+      }
+      
+      .reveal em {
+        color: #fff;
+        font-style: normal;
+        background: #0d99a5;
+        padding: 0 5px
+      }
+      
+      .reveal img.uncluttered {
+        border: none;
+        box-shadow: none;
+        background: none;
+      }
+      
+      .reveal .beside {
+        float: left;
+        display: inline;
+        padding: 0 10px;
+      }
+      
+      
+      /* Hack: Make inline code blocks smaller */
+      
+      .reveal code {
+        font-size: 70%;
+      }
+      .reveal code[class] {
+        font-size: 90%;
+      }
+      
+      .reveal iframe {
+        width:90%;
+        height:75%;
+      }
+    </style>
+    <script>
+      (function() {
+      
+        document.addEventListener('DOMContentLoaded', function() {
+          var a, _i, _len, _ref;
+          _ref = document.querySelectorAll('.reveal a');
+          for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+            a = _ref[_i];
+            a.target = "_blank";
+          }
+        });
+      
+      }).call(this);
+    </script>
+  </head>
+  <body>
+    <div class='reveal'>
+      <!-- Any section element inside of this container is displayed as a slide -->
+      <div class='slides'>
+        <section>
+          <h1>Accessibility <small>for web applications</small></h1>
+          <p>Klaus Fleerkötter</p>
+          <p>
+            <img class='uncluttered' src='images/a11y/mor.png'>
+            <img class='uncluttered' src='images/a11y/zweitag_white.png' style='margin-left: 30px;'>
+          </p>
+          <p>
+            28. Februar 2013
+          </p>
+        </section>
+        <section>
+          <h2>What is Accessibility?</h2>
+          
+          <p><small>aka <strong>Barrierefreiheit</strong> aka <strong>a11y</strong></small></p>
+          
+          <p>It really is <em>providing the best UX for all types of users</em>.</p>
+          
+          <p>It&#39;s <em>acknowledging</em> and <em>embracing diversity</em>.</p>
+          
+          <p>It <em>fosters solid engineering principles</em>, too.</p>
+        </section>
+        <section>
+          <section>
+            <h2>Why?</h2>
+            <p><strong>Compliance</strong>, <strong>People</strong>, <strong>Software Quality</strong></p>
+          </section>
+          <section>
+            <h3>Compliance</h3>
+            
+            <p>All public institutions are subject to <em>equal opportunity bills</em></p>
+            
+            <ul>
+            <li>Behindertengleichstellungsgesetz (<strong>BGG</strong>)</li>
+            <li>Barrierefreie-Informationstechnik-Verordnung (<strong>BTIV</strong>)</li>
+            <li>Not so obvious: <strong>Enterprise-internal collaboration apps</strong></li>
+            </ul>
+            <aside class='notes'>
+              <ul>
+              <li>BGG = Gesetz, Bundesebene, alle Träger öffentlicher Gewalt, Landes-spezifisch ähnlich</li>
+              <li>BITV = Verordnung, Anlage zum BGG</li>
+              </ul>
+            </aside>
+          </section>
+          <section>
+            <h3>People</h3>
+            
+            <p>Don&#39;t lock out <em>10%</em> of your prospective customers</p>
+            
+            <h3>Software Quality</h3>
+            
+            <p><strong>Usability</strong>, <strong>semantic design</strong> and <strong>search engine friendliness</strong></p>
+          </section>
+        </section>
+        <section>
+          <h2>How?</h2>
+          
+          <p><img src="images/a11y/ballmer.png" alt="STANDARDS! STANDARDS! STANDARDS!"></p>
+          
+          <p><strong>WCAG</strong>, <strong>HTML5</strong>, <strong>WAI-ARIA</strong></p>
+        </section>
+        <section>
+          <h2>JavaScript is no no-go anymore</h2>
+          
+          <p>Assistive technology works <strong>on top of regular browsers</strong>.</p>
+          
+          <p><em>98%</em> of all screen reader users have JavaScript enabled
+          <small>
+          <a href="https://www.ssbbartgroup.com/blog/2012/06/12/webaim-screen-reader-survey/">source</a>
+          </small>.</p>
+          
+          <p>Today, JS (if used carefully) <strong>enhances</strong> the browsing experience.</p>
+        </section>
+        <section>
+          <section>
+            <h2>Web Content Accessibility Guidelines<br><small>(WCAG) - W3C Recommendation</small></h2>
+            
+            <p>A collection of <em>principles</em>, <em>guidelines</em>, <em>techniques</em> and <em>success criteria</em>.</p>
+            
+            <p>4 Principles: <strong>perceivable</strong>, <strong>operable</strong>, <strong>understandable</strong>, <strong>robust</strong></p>
+            
+            <p><br></p>
+            
+            <p>The <em>BITV</em> is strongly tied and modeled after the WCAG.</p>
+            
+            <p>Version 2.0 especially embraces JavaScript and RIAs.</p>
+            
+            <p><br>
+            <a href="http://www.w3.org/TR/WCAG/">http://www.w3.org/TR/WCAG/</a></p>
+          </section>
+          <section>
+            <h3>Principle 1: Perceivable</h3>
+            
+            <p><em>Provide text alternatives</em> for non-text content:</p>
+            
+            <ul>
+            <li>Forms: <code>&lt;label&gt;</code> elements or <code>title</code> attributes for controls</li>
+            <li>Images: Use <code>alt</code>. Don&#39;t rely on visual elements to convey information</li>
+            <li>Time-based media (Audio, Video, Flash): Subtitles, transcripts</li>
+            <li>Check a11y of embedded content (e.g. PDF files)</li>
+            </ul>
+            <div class='fragment'>
+              <blockquote>
+              <p>Don’t write what the image is (“red dot”, “a stop sign”, “a fancy clock with golden hands and blue numerals”).
+              <strong>Describe what the image relays or represents</strong> (“The build failed”, “Don’t do this”, “It is 7:01 pm”).</p>
+              </blockquote>
+            </div>
+          </section>
+          <section>
+            <h3>Typical Problems</h3>
+            <p>
+              <img alt='A form that relies placeholders instead of labels' src='images/a11y/kap-login.png'>
+            </p>
+            <p>
+              <img alt='A control that relies on colors only to convey meaning' src='images/a11y/dialog-ampel.png'>
+            </p>
+          </section>
+          <section>
+            <h3>Principle 1: Perceivable</h3>
+            
+            <p>Colors: Ensure sufficient <em>contrast</em> between fore- and background</p>
+          </section>
+          <section>
+            <h3>Principle 2: Operable</h3>
+            
+            <p>Provide <strong>throughout keyboard navigation</strong> caring for the tab order<br>
+            <small>Avoid traps and dead-ends.</small></p>
+            
+            <pre><code>&lt;!-- Gets focus on tab stepping --&gt;&#x000A;&lt;span tabindex=&quot;0&quot;&gt;Show pop-up&lt;/span&gt;&#x000A;&lt;!-- Doesn&#39;t get focus on tab stepping --&gt;&#x000A;&lt;a tabindex=&quot;-1&quot;&gt;Styled as a link&lt;/a&gt;&#x000A;</code></pre>
+            <div class='fragment'>
+              <p>Use <strong>consistent headings</strong><br>
+              <small>They&#39;re used for orientation and keyboard navigation.</small></p>
+              
+              <pre><code>&lt;h1&gt;Bike Store&lt;/h1&gt;&#x000A;&lt;section&gt;&#x000A;  &lt;h2&gt;Articles&lt;/h2&gt;&#x000A;  &lt;!-- ... --&gt;&#x000A;&lt;/section&gt;&#x000A;&lt;aside&gt;&#x000A;  &lt;h3&gt;About Us&lt;/h3&gt;&#x000A;  &lt;!-- ... --&gt;&#x000A;&lt;/aside&gt;&#x000A;</code></pre>
+            </div>
+          </section>
+          <section>
+            <h3>Principle 2: Operable</h3>
+            
+            <p>Don&#39;t steal the current <strong>focus</strong></p>
+            
+            <pre><code>$(&#39;#results&#39;).focus(); // uh-oh&#x000A;</code></pre>
+            
+            <p><strong>Do</strong> use focus to <strong>guide the user</strong></p>
+            
+            <pre><code>&lt;!-- Focus the first form element --&gt;&#x000A;&lt;form&gt;&#x000A;  &lt;label for=&#39;name&#39;&gt;Your name (required)&lt;/label&gt;&#x000A;  &lt;input name=&#39;name&#39; type=&#39;text&#39;&gt;&#x000A;&lt;/form&gt;&#x000A;&#x000A;&lt;!-- Focus the close/cancel button in modal dialogs --&gt;&#x000A;&lt;dialog&gt;&#x000A;  &lt;button id=&#39;close-button&#39; autofocus&gt;Close&lt;/button&gt;&#x000A;&lt;/dialog&gt;&#x000A;</code></pre>
+            
+            <p>Avoid <em>seizure</em>-causing elements (blinking, flashing)</p>
+          </section>
+          <section>
+            <h3>Principle 3: Understandable</h3>
+            
+            <ul>
+            <li>Use <code>lang</code> attribute on <code>&lt;html&gt;</code> and parts</li>
+            <li>Use easy language</li>
+            <li>Behave predictably</li>
+            <li>Help users avoid and correct mistakes
+            
+            <ul>
+            <li>In forms, use <code>label</code></li>
+            <li>Client-side validations</li>
+            </ul></li>
+            </ul>
+          </section>
+          <section>
+            <h3>Principle 4: Robust</h3>
+            
+            <p><em>Not all semantic markup is accessible, but all accessible markup is semantic</em>.</p>
+            
+            <ul>
+            <li>Use semantic &amp; well-formatted HTML</li>
+            <li>When using widget frameworks, ensure they support WAI-ARIA</li>
+            <li>Don&#39;t fight the browser</li>
+            </ul>
+          </section>
+        </section>
+        <section>
+          <section>
+            <h2>HTML5</h2>
+            
+            <p>Built with <strong>a11y</strong> in mind: <em>Semanticness</em> and <em>Forms</em></p>
+            
+            <p>Semantic elements</p>
+            
+            <pre><code>&lt;section&gt;, &lt;nav&gt;, &lt;article&gt;, &lt;aside&gt;, &lt;hgroup&gt;, &lt;header&gt;, &lt;footer&gt;&#x000A;</code></pre>
+            
+            <p>Input types<br><small>Rails <a href="http://api.rubyonrails.org/classes/ActionView/Helpers/FormHelper.html">form helpers</a>, too!</small></p>
+            <div style='float:left;width:33%;'>
+              <pre><code>&lt;input type=&quot;tel&quot;&gt;&#x000A;&lt;input type=&quot;search&quot;&gt;&#x000A;&lt;input type=&quot;url&quot;&gt;&#x000A;&lt;input type=&quot;email&quot;&gt;&#x000A;</code></pre>
+            </div>
+            <div style='float:left;width:33%;'>
+              <pre><code>&lt;input type=&quot;datetime&quot;&gt;&#x000A;&lt;input type=&quot;date&quot;&gt;&#x000A;&lt;input type=&quot;time&quot;&gt;&#x000A;&lt;input type=&quot;month&quot;&gt;&#x000A;&lt;input type=&quot;week&quot;&gt;&#x000A;</code></pre>
+            </div>
+            <div style='float:left;width:33%;'>
+              <pre><code>&lt;input type=&quot;number&quot;&gt;&#x000A;&lt;input type=&quot;range&quot;&gt;&#x000A;&lt;input type=&quot;color&quot;&gt;&#x000A;</code></pre>
+            </div>
+          </section>
+          <section>
+            <h3>HTML5 Forms</h3>
+            
+            <p>Attributes<br><code>required, autocomplete, pattern, min, max, step</code></p>
+            
+            <pre><code>&lt;input type=&quot;email&quot; name=&quot;email&quot;&#x000A;    title=&quot;Ihre E-Mail-Adresse (erforderlich)&quot; required&gt;&#x000A;&#x000A;&lt;input type=&quot;text&quot; name=&quot;country_code&quot; pattern=&quot;[A-Za-z]{3}&quot;&#x000A;    title=&quot;Three letter country code&quot;&gt;&#x000A;&#x000A;&lt;input type=&quot;number&quot; min=&quot;8&quot; max=&quot;12&quot; name=&quot;age&quot;&#x000A;    title=&quot;Nur für Grundschulkinder&quot;&gt;&#x000A;</code></pre>
+            
+            <p>Elements</p>
+            
+            <pre><code>&lt;meter min=0 max=20 value=12&gt;12cm&lt;/meter&gt;&#x000A;</code></pre>
+            
+            <p><meter min=0 max=20 value=12>12cm</meter></p>
+            
+            <pre><code>&lt;progress max=100 value=50&gt;50%&lt;/progress&gt;&#x000A;&lt;progress&gt;&lt;/progress&gt;&#x000A;</code></pre>
+            
+            <p><progress max=100 value=50>50%</progress>
+            <progress></progress></p>
+            <aside class='notes'>
+              BEISPIEL?
+            </aside>
+          </section>
+          <section>
+            <h3>But...</h3>
+            <iframe scrolling='no' src='iframe.html?scrollTop=343&amp;url=http://caniuse.com/%23feat=forms'></iframe>
+            <p>
+              <a href='http://caniuse.com/#feat=forms'>caniuse.com/#feat=forms</a>
+            </p>
+            <p>
+              <a href='http://www.wufoo.com/html5'>wufoo.com/html5</a>
+            </p>
+            <aside class='notes'>
+              Implementation differs among browsers
+            </aside>
+          </section>
+        </section>
+        <section>
+          <section>
+            <h2>Accessibility for Rich Internet Applications<br><small>(WAI-ARIA)</small></h2>
+            
+            <p>An <em>RDF-based ontology</em> enabling assistive technology to <strong>understand UI interactions better</strong>.</p>
+            
+            <p>WAI-ARIA can be used to <strong>convey semanticness</strong> where &quot;native&quot; solutions don&#39;t cut it.</p>
+            
+            <p><br>
+            <em style="color:gold;background:none">Golden Rule:</em><br>
+            Use native HTML(5) where possible, fall back to WAI-ARIA.</p>
+          </section>
+          <section>
+            <h3>Roles</h3>
+            
+            <p>Roles identify markup compositions that represent <strong>widgets</strong>, e.g.</p>
+            
+            <ul>
+            <li><em>compositions</em> like <strong>fly-out menus</strong>, <strong>treeviews</strong>, <strong>grids</strong> or <strong>tabpanels</strong></li>
+            <li>Non-browser <em>controls</em> like <strong>tooltips</strong>, <strong>spinner</strong> or <strong>sliders</strong></li>
+            <li><em>modal dialogs</em>,</li>
+            <li><em>drag-and-drop regions</em> or</li>
+            <li>areas that are subject to <em>real-time updates</em></li>
+            </ul>
+            
+            <p><br>
+            Roles are assigned via the <em>attribute</em> <code>aria-role</code></p>
+          </section>
+          <section>
+            <h3>States &amp; Properties</h3>
+            
+            <ul>
+            <li>Both are closely related</li>
+            <li>They are <em>attributes</em> of elements (<code>aria-xy</code>).</li>
+            <li>In contrast to properties,<br>
+            <strong>states likely change during runtime</strong></li>
+            <li>Roles may implicitly assign properties to elements</li>
+            </ul>
+          </section>
+          <section>
+            <h3>WAI-ARIA Taxonomy</h3>
+            <iframe src='http://www.w3.org/TR/wai-aria/rdf_model.png'></iframe>
+          </section>
+          <section>
+            <h3>The <code>application</code> role</h3>
+            
+            <p>Assistive technology uses keyboard combinations other than browser default.
+            This role tells AT to pass through the concerned <code>onkeydown</code> events.</p>
+          </section>
+          <section>
+            <h3>Live regions</h3>
+            
+            <p>Roles to handle focus gracefully.</p>
+            <div style='float:left;width:50%;'>
+              <p><em>Generic</em></p>
+              
+              <pre><code>&lt;aside role=&#39;region&#39;&gt;&lt;/aside&gt;&#x000A;</code></pre>
+            </div>
+            <div style='float:left;width:50%;'>
+              <p><em>Specific</em></p>
+              
+              <pre><code>&lt;aside role=&#39;log&#39;&gt;&lt;/aside&gt;&#x000A;&lt;aside role=&#39;status&#39;&gt;&lt;/aside&gt;&#x000A;&lt;aside role=&#39;alert&#39;&gt;&lt;/aside&gt;&#x000A;&lt;aside role=&#39;progressbar&#39;&gt;&lt;/aside&gt;&#x000A;&lt;aside role=&#39;marquee &#39;&gt;&lt;/aside&gt;&lt;!-- sic! --&gt;&#x000A;&lt;aside role=&#39;timer&#39;&gt;&lt;/aside&gt;&#x000A;</code></pre>
+            </div>
+            <div>
+              <p><br>
+              Example: Displaying form validations</p>
+            </div>
+          </section>
+        </section>
+        <section>
+          <section>
+            <h2>Assistive Technology</h2>
+            
+            <ul>
+            <li>Screen Readers
+            
+            <ul>
+            <li>Windows: JAWS, NVDA</li>
+            <li>Mac OS: VoiceOver</li>
+            <li>Linux: Orca</li>
+            <li>Chrome: ChromeVox</li>
+            </ul></li>
+            <li>Browsers
+            
+            <ul>
+            <li>Good: Internet Explorer (and Windows in general), Firefox</li>
+            <li>Not so good: Safari, Opera, Chromme</li>
+            </ul></li>
+            </ul>
+          </section>
+          <section>
+            <h2>Testing tools</h2>
+            
+            <p>For smoke testing only</p>
+            
+            <ul>
+            <li><a href="http://paciellogroup.com/resources/wat/ie">Web Accessability Toolbar</a> (IE)</li>
+            <li><a href="http://wave.webaim.org/toolbar">WAVE toolbar</a> (Firefox)</li>
+            <li><a href="http://www.squizlabs.com/general/html-codesniffer">HTML codesniffer</a> (bookmarklet) - WCAG validator</li>
+            <li><a href="https://addons.mozilla.org/de/firefox/addon/fangs-screen-reader-emulator/">Fangs</a> (Firefox) - Screen reader emulator</li>
+            </ul>
+          </section>
+        </section>
+        <section>
+          <h2>Bottom Line</h2>
+          
+          <ul>
+          <li>A11y principles foster software quality and design</li>
+          <li>JavaScript is no no-go for a11y anymore</li>
+          <li>WCAG provides a set of principles (operable, perceivable, understandable, robust), guidelines, techniques and success criteria</li>
+          <li>WAI-ARIA is a standard for RIA a11y</li>
+          <li>Make use of validators and screen readers to test your software</li>
+          </ul>
+        </section>
+        <section>
+          <h2>Vielen Dank</h2>
+          
+          <p>Klaus Fleerkötter</p>
+          
+          <p>(<a href="mailto:hi@kaeff.net">hi@</a>)<a href="http://kaeff.net">kaeff.net</a></p>
+          
+          <p><a href="https://twitter.com/kaeff">@kaeff</a></p>
+          
+          <p><br>
+          <a href="http://www.zweitag.de/en">zweitag.de</a></p>
+        </section>
+      </div>
+    </div>
+    <script src='lib/js/head.min.js'></script>
+    <script src='js/reveal.min.js'></script>
+    <script>
+      // Full list of configuration options available here:
+      // https://github.com/hakimel/reveal.js#configuration
+      Reveal.initialize({
+        controls: true,
+        progress: true,
+        history: true,
+        center: true,
+      
+        theme: Reveal.getQueryHash().theme, // available themes are in /css/theme
+        transition: Reveal.getQueryHash().transition || 'linear', // default/cube/page/concave/zoom/linear/fade/none
+      
+        // Optional libraries used to extend on reveal.js
+        dependencies: [
+          { src: 'lib/js/classList.js', condition: function() { return !document.body.classList; } },
+          { src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
+          { src: 'plugin/zoom-js/zoom.js', async: true, condition: function() { return !!document.body.classList; } },
+          { src: 'plugin/notes/notes.js', async: true, condition: function() { return !!document.body.classList; } }
+        ]
+      });
+    </script>
+  </body>
+</html>

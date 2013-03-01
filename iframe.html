@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<head>
+  <script>
+    function getURLParameter(name) {
+        return decodeURI(
+            (RegExp(name + '=' + '(.+?)(&|$)').exec(location.search)||[,null])[1]
+        );
+    }
+  </script>
+  <script>
+    (function() {
+    
+      document.addEventListener('DOMContentLoaded', function() {
+        var scrollTop;
+        document.querySelector('iframe').src = decodeURIComponent(getURLParameter('url'));
+        if (scrollTop = getURLParameter('scrollTop')) {
+          return document.querySelector('iframe').onload = function() {
+            return document.body.scrollTop = scrollTop;
+          };
+        }
+      }, false);
+    
+    }).call(this);
+  </script>
+  <style>
+    body {
+      margin: 0; }
+  </style>
+</head>
+<body>
+  <iframe frameborder='0' height='1000' marginheight='0' marginwidth='0' scrolling='no' src='' width='100%'></iframe>
+</body>
