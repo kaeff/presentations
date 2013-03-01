@@ -1,0 +1,489 @@
+!!!5
+%html{:lang => "en"}
+  %head
+    %meta{:charset => "utf-8"}/
+    %title Accessibility for Web Applications - Presentation
+    %meta{:content => "kaeff", :name => "author"}/
+    %meta{:content => "yes", :name => "apple-mobile-web-app-capable"}/
+    %meta{:content => "black-translucent", :name => "apple-mobile-web-app-status-bar-style"}/
+    %meta{:content => "width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no", :name => "viewport"}/
+
+    %link{:href => "css/reveal.min.css", :rel => "stylesheet"}/
+    %link#theme{:href => "css/theme/default.css", :rel => "stylesheet"}/
+    / For syntax highlighting
+    %link{:href => "lib/css/zenburn.css", :rel => "stylesheet"}/
+    / If the query includes 'print-pdf', use the PDF print sheet
+    :javascript
+      document.write( '<link rel="stylesheet" href="css/print/' + ( window.location.search.match( /print-pdf/gi ) ? 'pdf' : 'paper' ) + '.css" type="text/css" media="print">' );
+    /[if lt IE 9]
+      <script src="lib/js/html5shiv.js"></script>
+    :css
+      .reveal h2 {
+        margin: 1em 0 0.2em 0;
+      }
+
+      .reveal blockquote {
+        width: 90%
+      }
+
+      .reveal a {
+        target: blank;
+      }
+
+      .reveal strong {
+        color: #13daec;
+        text-decoration: none;
+        -webkit-transition: color .15s ease;
+        -moz-transition: color .15s ease;
+        -ms-transition: color .15s ease;
+        -o-transition: color .15s ease;
+        transition: color .15s ease;
+      }
+
+      .reveal em {
+        color: #fff;
+        font-style: normal;
+        background: #0d99a5;
+        padding: 0 5px
+      }
+
+      .reveal img.uncluttered {
+        border: none;
+        box-shadow: none;
+        background: none;
+      }
+
+      .reveal .beside {
+        float: left;
+        display: inline;
+        padding: 0 10px;
+      }
+
+
+      /* Hack: Make inline code blocks smaller */
+
+      .reveal code {
+        font-size: 70%;
+      }
+      .reveal code[class] {
+        font-size: 90%;
+      }
+
+      .reveal iframe {
+        width:90%;
+        height:75%;
+      }
+
+    :coffeescript
+      document.addEventListener 'DOMContentLoaded', ->
+        a.target = "_blank" for a in document.querySelectorAll('.reveal a')
+        return
+
+  %body
+    .reveal
+      / Any section element inside of this container is displayed as a slide
+      .slides
+
+        %section
+          %h1 Accessibility <small>for web applications</small>
+          %p Klaus Fleerkötter
+          %p
+            %img.uncluttered{src: "images/a11y/mor.png"}
+            %img.uncluttered{src: "images/a11y/zweitag_white.png", style: "margin-left: 30px;"}
+          %p
+            28. Februar 2013
+
+        %section
+          :markdown
+            ## What is Accessibility?
+            <small>aka **Barrierefreiheit** aka **a11y**</small>
+
+            It really is *providing the best UX for all types of users*.
+
+            It's *acknowledging* and *embracing diversity*.
+
+            It *fosters solid engineering principles*, too.
+
+        %section
+          %section
+            %h2 Why?
+
+            :markdown
+              **Compliance**, **People**, **Software Quality**
+
+          %section
+            :markdown
+              ### Compliance
+
+              All public institutions are subject to *equal opportunity bills*
+
+              * Behindertengleichstellungsgesetz (**BGG**)
+              * Barrierefreie-Informationstechnik-Verordnung (**BTIV**)
+              * Not so obvious: **Enterprise-internal collaboration apps**
+
+            %aside.notes
+              :markdown
+                * BGG = Gesetz, Bundesebene, alle Träger öffentlicher Gewalt, Landes-spezifisch ähnlich
+                * BITV = Verordnung, Anlage zum BGG
+          %section
+            :markdown
+              ### People
+
+              Don't lock out *10%* of your prospective customers
+
+              ### Software Quality
+
+              **Usability**, **semantic design** and **search engine friendliness**
+
+        %section
+          :markdown
+            ## How?
+
+            ![STANDARDS! STANDARDS! STANDARDS!](images/a11y/ballmer.png)
+
+            **WCAG**, **HTML5**, **WAI-ARIA**
+
+        %section
+          :markdown
+            ## JavaScript is no no-go anymore
+
+            Assistive technology works **on top of regular browsers**.
+
+            *98%* of all screen reader users have JavaScript enabled
+            <small>
+            [source](https://www.ssbbartgroup.com/blog/2012/06/12/webaim-screen-reader-survey/)
+            </small>.
+
+            Today, JS (if used carefully) **enhances** the browsing experience.
+        %section
+          %section
+            :markdown
+              ## Web Content Accessibility Guidelines<br><small>(WCAG) - W3C Recommendation</small>
+
+              A collection of *principles*, *guidelines*, *techniques* and *success criteria*.
+
+              4 Principles: **perceivable**, **operable**, **understandable**, **robust**
+
+              <br>
+
+              The *BITV* is strongly tied and modeled after the WCAG.
+
+              Version 2.0 especially embraces JavaScript and RIAs.
+
+              <br>
+              [http://www.w3.org/TR/WCAG/](http://www.w3.org/TR/WCAG/)
+
+
+          %section
+            :markdown
+              ### Principle 1: Perceivable
+
+              *Provide text alternatives* for non-text content:
+
+              * Forms: `<label>` elements or `title` attributes for controls
+              * Images: Use `alt`. Don't rely on visual elements to convey information
+              * Time-based media (Audio, Video, Flash): Subtitles, transcripts
+              * Check a11y of embedded content (e.g. PDF files)
+
+            .fragment
+              :markdown
+                > Don’t write what the image is (“red dot”, “a stop sign”, “a fancy clock with golden hands and blue numerals”).
+                **Describe what the image relays or represents** (“The build failed”, “Don’t do this”, “It is 7:01 pm”).
+
+          %section
+            %h3 Typical Problems
+            %p
+              %img{src: "images/a11y/kap-login.png", alt: "A form that relies placeholders instead of labels"}
+            %p
+              %img{src: "images/a11y/dialog-ampel.png", alt: "A control that relies on colors only to convey meaning"}
+
+          %section
+            :markdown
+              ### Principle 1: Perceivable
+
+              Colors: Ensure sufficient *contrast* between fore- and background
+          %section
+            :markdown
+              ### Principle 2: Operable
+
+              Provide **throughout keyboard navigation** caring for the tab order<br>
+              <small>Avoid traps and dead-ends.</small>
+
+                  <!-- Gets focus on tab stepping -->
+                  <span tabindex="0">Show pop-up</span>
+                  <!-- Doesn't get focus on tab stepping -->
+                  <a tabindex="-1">Styled as a link</a>
+
+            .fragment
+              :markdown
+                Use **consistent headings**<br>
+                <small>They're used for orientation and keyboard navigation.</small>
+
+                    <h1>Bike Store</h1>
+                    <section>
+                      <h2>Articles</h2>
+                      <!-- ... -->
+                    </section>
+                    <aside>
+                      <h3>About Us</h3>
+                      <!-- ... -->
+                    </aside>
+
+
+          %section
+            :markdown
+              ### Principle 2: Operable
+
+              Don't steal the current **focus**
+
+                  $('#results').focus(); // uh-oh
+
+              **Do** use focus to **guide the user**
+
+                  <!-- Focus the first form element -->
+                  <form>
+                    <label for='name'>Your name (required)</label>
+                    <input name='name' type='text'>
+                  </form>
+
+                  <!-- Focus the close/cancel button in modal dialogs -->
+                  <dialog>
+                    <button id='close-button' autofocus>Close</button>
+                  </dialog>
+
+              Avoid *seizure*-causing elements (blinking, flashing)
+
+          %section
+            :markdown
+              ### Principle 3: Understandable
+
+              * Use `lang` attribute on `<html>` and parts
+              * Use easy language
+              * Behave predictably
+              * Help users avoid and correct mistakes
+                * In forms, use `label`
+                * Client-side validations
+
+          %section
+            :markdown
+              ### Principle 4: Robust
+
+              *Not all semantic markup is accessible, but all accessible markup is semantic*.
+
+              * Use semantic & well-formatted HTML
+              * When using widget frameworks, ensure they support WAI-ARIA
+              * Don't fight the browser
+        %section
+          %section
+            :markdown
+              ## HTML5
+
+              Built with **a11y** in mind: *Semanticness* and *Forms*
+
+              Semantic elements
+
+                  <section>, <nav>, <article>, <aside>, <hgroup>, <header>, <footer>
+
+              Input types<br><small>Rails [form helpers](http://api.rubyonrails.org/classes/ActionView/Helpers/FormHelper.html), too!</small>
+
+            %div{style: "float:left;width:33%;"}
+              :markdown
+                    <input type="tel">
+                    <input type="search">
+                    <input type="url">
+                    <input type="email">
+            %div{style: "float:left;width:33%;"}
+              :markdown
+                    <input type="datetime">
+                    <input type="date">
+                    <input type="time">
+                    <input type="month">
+                    <input type="week">
+            %div{style: "float:left;width:33%;"}
+              :markdown
+                    <input type="number">
+                    <input type="range">
+                    <input type="color">
+
+          %section
+            :markdown
+              ### HTML5 Forms
+
+              Attributes<br><code>required, autocomplete, pattern, min, max, step</code>
+
+                  <input type="email" name="email"
+                      title="Ihre E-Mail-Adresse (erforderlich)" required>
+
+                  <input type="text" name="country_code" pattern="[A-Za-z]{3}"
+                      title="Three letter country code">
+
+                  <input type="number" min="8" max="12" name="age"
+                      title="Nur für Grundschulkinder">
+
+              Elements
+
+                  <meter min=0 max=20 value=12>12cm</meter>
+
+              <meter min=0 max=20 value=12>12cm</meter>
+
+                  <progress max=100 value=50>50%</progress>
+                  <progress></progress>
+
+              <progress max=100 value=50>50%</progress>
+              <progress></progress>
+
+            %aside.notes
+              BEISPIEL?
+
+          %section
+            %h3 But...
+            %iframe{src: "iframe.html?scrollTop=343&url=http://caniuse.com/%23feat=forms", scrolling: :no}
+            %p
+              %a{href: "http://caniuse.com/#feat=forms"} caniuse.com/#feat=forms
+            %p
+              %a{href: "http://www.wufoo.com/html5"} wufoo.com/html5
+            %aside.notes
+              Implementation differs among browsers
+
+        %section
+          %section
+            :markdown
+              ## Accessibility for Rich Internet Applications<br><small>(WAI-ARIA)</small>
+
+              An *RDF-based ontology* enabling assistive technology to **understand UI interactions better**.
+
+              WAI-ARIA can be used to **convey semanticness** where "native" solutions don't cut it.
+
+              <br>
+              <em style="color:gold;background:none">Golden Rule:</em><br>
+              Use native HTML(5) where possible, fall back to WAI-ARIA.
+
+          %section
+            :markdown
+              ### Roles
+
+              Roles identify markup compositions that represent **widgets**, e.g.
+
+              * *compositions* like **fly-out menus**, **treeviews**, **grids** or **tabpanels**
+              * Non-browser *controls* like **tooltips**, **spinner** or **sliders**
+              * *modal dialogs*,
+              * *drag-and-drop regions* or
+              * areas that are subject to *real-time updates*
+
+              <br>
+              Roles are assigned via the *attribute* `aria-role`
+
+          %section
+            :markdown
+              ### States & Properties
+
+              * Both are closely related
+              * They are *attributes* of elements (`aria-xy`).
+              * In contrast to properties,<br>
+                **states likely change during runtime**
+              * Roles may implicitly assign properties to elements
+
+          %section
+            %h3 WAI-ARIA Taxonomy
+            %iframe{src: "http://www.w3.org/TR/wai-aria/rdf_model.png"}
+          %section
+            :markdown
+              ### The `application` role
+
+              Assistive technology uses keyboard combinations other than browser default.
+              This role tells AT to pass through the concerned `onkeydown` events.
+
+          %section
+            :markdown
+              ### Live regions
+
+              Roles to handle focus gracefully.
+
+            %div{style: "float:left;width:50%;"}
+              :markdown
+                *Generic*
+
+                    <aside role='region'></aside>
+
+            %div{style: "float:left;width:50%;"}
+              :markdown
+                *Specific*
+
+                    <aside role='log'></aside>
+                    <aside role='status'></aside>
+                    <aside role='alert'></aside>
+                    <aside role='progressbar'></aside>
+                    <aside role='marquee '></aside><!-- sic! -->
+                    <aside role='timer'></aside>
+            %div
+              :markdown
+                <br>
+                Example: Displaying form validations
+        %section
+          %section
+            :markdown
+              ## Assistive Technology
+
+              * Screen Readers
+                * Windows: JAWS, NVDA
+                * Mac OS: VoiceOver
+                * Linux: Orca
+                * Chrome: ChromeVox
+              * Browsers
+                * Good: Internet Explorer (and Windows in general), Firefox
+                * Not so good: Safari, Opera, Chromme
+          %section
+            :markdown
+              ## Testing tools
+
+              For smoke testing only
+
+              * [Web Accessability Toolbar](http://paciellogroup.com/resources/wat/ie) (IE)
+              * [WAVE toolbar](http://wave.webaim.org/toolbar) (Firefox)
+              * [HTML codesniffer](http://www.squizlabs.com/general/html-codesniffer) (bookmarklet) - WCAG validator
+              * [Fangs](https://addons.mozilla.org/de/firefox/addon/fangs-screen-reader-emulator/) (Firefox) - Screen reader emulator
+
+        %section
+          :markdown
+            ## Bottom Line
+
+            * A11y principles foster software quality and design
+            * JavaScript is no no-go for a11y anymore
+            * WCAG provides a set of principles (operable, perceivable, understandable, robust), guidelines, techniques and success criteria
+            * WAI-ARIA is a standard for RIA a11y
+            * Make use of validators and screen readers to test your software
+        %section
+          :markdown
+            ## Vielen Dank
+
+            Klaus Fleerkötter
+
+            ([hi@](mailto:hi@kaeff.net))[kaeff.net](http://kaeff.net)
+
+            [@kaeff](https://twitter.com/kaeff)
+
+            <br>
+            [zweitag.de](http://www.zweitag.de/en)
+
+    %script{:src => "lib/js/head.min.js"}
+    %script{:src => "js/reveal.min.js"}
+    :javascript
+      // Full list of configuration options available here:
+      // https://github.com/hakimel/reveal.js#configuration
+      Reveal.initialize({
+        controls: true,
+        progress: true,
+        history: true,
+        center: true,
+
+        theme: Reveal.getQueryHash().theme, // available themes are in /css/theme
+        transition: Reveal.getQueryHash().transition || 'linear', // default/cube/page/concave/zoom/linear/fade/none
+
+        // Optional libraries used to extend on reveal.js
+        dependencies: [
+          { src: 'lib/js/classList.js', condition: function() { return !document.body.classList; } },
+          { src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
+          { src: 'plugin/zoom-js/zoom.js', async: true, condition: function() { return !!document.body.classList; } },
+          { src: 'plugin/notes/notes.js', async: true, condition: function() { return !!document.body.classList; } }
+        ]
+      });

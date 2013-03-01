@@ -1,0 +1,20 @@
+!!!5
+%head
+  :javascript
+    function getURLParameter(name) {
+        return decodeURI(
+            (RegExp(name + '=' + '(.+?)(&|$)').exec(location.search)||[,null])[1]
+        );
+    }
+  :coffeescript
+    document.addEventListener('DOMContentLoaded', ->
+      document.querySelector('iframe').src = decodeURIComponent(getURLParameter('url'))
+      if scrollTop = getURLParameter('scrollTop')
+        document.querySelector('iframe').onload = ->
+          document.body.scrollTop = scrollTop 
+    , false)
+  :sass
+    body
+      margin: 0
+%body
+  %iframe{:frameborder => "0", :height => "1000", :marginheight => "0", :marginwidth => "0", :scrolling => "no", :src => "", :width => "100%"}
